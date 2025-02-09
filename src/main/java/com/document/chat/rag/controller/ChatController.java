@@ -1,7 +1,9 @@
 package com.document.chat.rag.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -14,7 +16,9 @@ public class ChatController {
 
     public ChatController(ChatClient.Builder builder,VectorStore vectorStore) {
         this.chatClient = builder
-        		.defaultAdvisors(new QuestionAnswerAdvisor(vectorStore))
+        		.defaultAdvisors(
+                new MessageChatMemoryAdvisor(new InMemoryChatMemory()),     
+                new QuestionAnswerAdvisor(vectorStore))
                 .build();
     }
 
