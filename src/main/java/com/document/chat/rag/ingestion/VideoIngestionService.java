@@ -35,11 +35,17 @@ public class VideoIngestionService implements CommandLineRunner{
 	
 		@Override
 		public void run(String... args) throws Exception {
-			// TODO Auto-generated method stub
+			
 			
 			String link = "https://www.youtube.com/watch?v=AcDnSLYdhbQ";
-			String value = processing( link);
-			 log.info("Video processed : {}", value);
+
+			long count = vectorStore.similaritySearch("*").size();
+			log.info("result size  : {}", count);
+
+			if(count == 0){
+				String value = processing( link);
+			        log.info("Video processed : {}", value);
+			}	
 		}
 	
 	public String processing(String link) {
